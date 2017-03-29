@@ -3,7 +3,14 @@
 
 frappe.ui.form.on('Bulk Edit', {
 	refresh: function(frm) {
-		
+		frm.page.set_primary_action(__('Update'), function() {
+			if(!frm.doc.update_value){
+				frappe.throw(__('Field "value" is mandatory. Please specify value to be updated'));
+			}
+			else{
+				
+			}
+		});
 	},
 	document_type: function(frm) {
 		// set field options
@@ -20,7 +27,6 @@ frappe.ui.form.on('Bulk Edit', {
 			);
 			frm.set_df_property('field', 'options', options);
 			frm.set_df_property('cond_field', 'options', options);
-			frm.set_df_property('cfield', 'options', options);
 		});
 	}
 });

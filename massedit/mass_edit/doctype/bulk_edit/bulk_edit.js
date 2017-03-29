@@ -22,7 +22,7 @@ frappe.ui.form.on('Bulk Edit', {
 						doctype: frm.doc.document_type,
 						field: frm.doc.field,
 						value: frm.doc.update_value,
-						condition_list: cond,
+						condition: cond,
 					},
 					callback: function() {
 						frappe.hide_progress();

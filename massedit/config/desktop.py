@@ -7,7 +7,7 @@ def get_data():
 		{
 			"module_name": "Mass Edit",
 			"color": "grey",
-			"icon": ".octicon-pencil",
+			"icon": "octicon .octicon-pencil",
 			"type": "module",
 			"label": _("Mass Edit")
 		}

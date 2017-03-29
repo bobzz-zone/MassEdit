@@ -11,11 +11,11 @@ frappe.ui.form.on('Bulk Edit', {
 				var cond="";
 				$.each(frm.doc.conditions, function(i, d) {
 					if (cond==""){
-						cond = " where "+d.cfield+" "+d.cond+' "'+d.cval+'" '
+						cond = " where "+d.cfield+" "+d.cond+' "'+d.cval+'" ';
 					}else{
-						cond = cond + " and "+d.cfield+" "+d.cond+' "'+d.cval+'" '
+						cond = cond + " and "+d.cfield+" "+d.cond+' "'+d.cval+'" ';
 					}
-				}
+				});
 				frappe.call({
 					method: 'massedit.mass_edit.doctype.bulk_edit.bulk_edit.update',
 					args: {

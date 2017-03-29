@@ -29,7 +29,7 @@ def update(doctype, field, value, condition):
 			raise e
 
 		frappe.publish_progress(float(i)*100/n,
-			title = _('Updating Records'), doctype='Bulk Update', docname='Bulk Update')
+			title = _('Updating Records'), doctype='Bulk Edit', docname='Bulk Edit')
 
 	# clear messages
 	frappe.local.message_log = []

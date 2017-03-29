@@ -8,3 +8,35 @@ from frappe.model.document import Document
 
 class BulkEdit(Document):
 	pass
+@frappe.whitelist()
+def update(doctype, field, value, condition_list):
+	condition=""
+	for cond in condition_list:
+		if condition=="":
+			condition = ' where ' + cond.get("cfield") + " " + cond.get("cond")+ ' "' +cond.get("cval")+'" '
+		else:
+			condition = condition + " and "+ cond.get("cfield") + " " + cond.get("cond")+ ' "' +cond.get("cval")+'" '
+
+	if ';' in condition:
+		frappe.throw('; not allowed in condition')
+
+	items = frappe.db.sql_list('''select name from `tab{0}`{1} '''.format(doctype,
+		condition), debug=1)
+	n = len(items)
+
+	for i, d in enumerate(items):
+		doc = frappe.get_doc(doctype, d)
+		doc.set(field, value)
+
+		try:
+			doc.save()
+		except Exception, e:
+			frappe.msgprint(_("Validation failed for {0}").format(frappe.bold(doc.name)))
+			raise e
+
+		frappe.publish_progress(float(i)*100/n,
+			title = _('Updating Records'), doctype='Bulk Update', docname='Bulk Update')
+
+	# clear messages
+	frappe.local.message_log = []
+	frappe.msgprint(_('{0} records updated').format(n), title=_('Success'), indicator='green')

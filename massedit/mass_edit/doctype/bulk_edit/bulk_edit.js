@@ -8,7 +8,18 @@ frappe.ui.form.on('Bulk Edit', {
 				frappe.throw(__('Field "value" is mandatory. Please specify value to be updated'));
 			}
 			else{
-				
+				frappe.call({
+					method: 'massedit.mass_edit.doctype.bulk_edit.bulk_edit.update',
+					args: {
+						doctype: frm.doc.document_type,
+						field: frm.doc.field,
+						value: frm.doc.update_value,
+						condition_list: frm.doc.conditions,
+					},
+					callback: function() {
+						frappe.hide_progress();
+					}
+				});
 			}
 		});
 	},
@@ -28,5 +39,9 @@ frappe.ui.form.on('Bulk Edit', {
 			frm.set_df_property('field', 'options', options);
 			frm.set_df_property('cond_field', 'options', options);
 		});
+	},
+	add:function(frm){
+		cur_frm.add_child("conditions",{"cfield":frm.doc.cond_field,"cond":frm.doc.condition,"cval":frm.doc.cond_value});
+		refresh_field("conditions");
 	}
 });

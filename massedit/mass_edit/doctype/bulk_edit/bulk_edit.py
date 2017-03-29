@@ -9,13 +9,7 @@ from frappe.model.document import Document
 class BulkEdit(Document):
 	pass
 @frappe.whitelist()
-def update(doctype, field, value, condition_list):
-	condition=""
-	for cond in condition_list:
-		if condition=="":
-			condition = ' where ' + cond.get("cfield") + " " + cond.get("cond")+ ' "' +cond.get("cval")+'" '
-		else:
-			condition = condition + " and "+ cond.get("cfield") + " " + cond.get("cond")+ ' "' +cond.get("cval")+'" '
+def update(doctype, field, value, condition):
 
 	if ';' in condition:
 		frappe.throw('; not allowed in condition')

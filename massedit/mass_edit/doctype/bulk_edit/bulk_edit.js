@@ -8,13 +8,21 @@ frappe.ui.form.on('Bulk Edit', {
 				frappe.throw(__('Field "value" is mandatory. Please specify value to be updated'));
 			}
 			else{
+				var cond="";
+				$.each(frm.doc.conditions, function(i, d) {
+					if (cond==""){
+						cond = " where "+d.cfield+" "+d.cond+' "'+d.cval+'" '
+					}else{
+						cond = cond + " and "+d.cfield+" "+d.cond+' "'+d.cval+'" '
+					}
+				}
 				frappe.call({
 					method: 'massedit.mass_edit.doctype.bulk_edit.bulk_edit.update',
 					args: {
 						doctype: frm.doc.document_type,
 						field: frm.doc.field,
 						value: frm.doc.update_value,
-						condition_list: frm.doc.conditions,
+						condition_list: cond,
 					},
 					callback: function() {
 						frappe.hide_progress();
